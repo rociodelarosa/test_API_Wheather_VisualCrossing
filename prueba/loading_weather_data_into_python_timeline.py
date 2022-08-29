@@ -1,5 +1,8 @@
-#Downloading weather data using Python as a CSV using the Visual Crossing Weather API
-#See https://www.visualcrossing.com/resources/blog/how-to-load-historical-weather-data-using-python-without-scraping/ for more information.
+"""
+This script has functions that connect to the Wheather VisualCrossing API.
+The obtained data are stored in csv files.
+"""
+
 import csv
 import codecs
 import urllib.request
@@ -19,22 +22,22 @@ def data_weather_loc(location, startdate, enddate, contenttype='csv', unitgroup=
     apiquery=baseurl + location
 
     #append the start and end date if present
-    if (len(startdate)):
+    if startdate:
         apiquery+="/"+startdate
-        if (len(enddate)):
+        if enddate:
             apiquery+="/"+enddate
 
     #Url is completed. Now add query parameters (could be passed as GET or POST)
     apiquery+="?"
 
     #append each parameter as necessary
-    if (len(unitgroup)):
+    if unitgroup:
         apiquery+="&unitGroup="+unitgroup
 
-    if (len(contenttype)):
+    if contenttype:
         apiquery+="&contentType="+contenttype
 
-    if (len(include)):
+    if include:
         apiquery+="&include="+include
 
     apiquery+="&key="+apikey
@@ -42,10 +45,10 @@ def data_weather_loc(location, startdate, enddate, contenttype='csv', unitgroup=
     print(' - Running query URL: ', apiquery)
     print()
 
-    try: 
+    try:
         csvbytes = urllib.request.urlopen(apiquery)
     except urllib.error.HTTPError as exc:
-        errorinfo= exc.read().decode() 
+        errorinfo= exc.read().decode()
         print('Error code: ', exc.code, errorinfo)
         sys.exit()
     except  urllib.error.URLError as exc:
@@ -64,7 +67,7 @@ def data_weather_loc(location, startdate, enddate, contenttype='csv', unitgroup=
     rows = []
     for row in csvtext:
         rows.append(row)
-    
+
     startdate = startdate.replace(':', '')
     enddate = enddate.replace(':', '')
 
@@ -77,7 +80,6 @@ def data_weather_loc(location, startdate, enddate, contenttype='csv', unitgroup=
         csvwriter.writerows(rows) # 5. write the rest of the data
 
 
-    
 def data_weather_latlon(latitude, longitude, startdate, enddate, question, contenttype='csv', unitgroup='metric', include="days"):
     """Obtains weather API data through latitude and longitude."""
     baseurl = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
@@ -90,22 +92,22 @@ def data_weather_latlon(latitude, longitude, startdate, enddate, question, conte
     apiquery=baseurl + latitude + '%2C' + longitude
 
     #append the start and end date if present
-    if (len(startdate)):
+    if startdate:
         apiquery+="/"+startdate
-        if (len(enddate)):
+        if enddate:
             apiquery+="/"+enddate
 
     #Url is completed. Now add query parameters (could be passed as GET or POST)
     apiquery+="?"
 
     #append each parameter as necessary
-    if (len(unitgroup)):
+    if unitgroup:
         apiquery+="&unitGroup="+unitgroup
 
-    if (len(contenttype)):
+    if contenttype:
         apiquery+="&contentType="+contenttype
 
-    if (len(include)):
+    if include:
         apiquery+="&include="+include
 
     apiquery+="&key="+apikey
@@ -113,10 +115,10 @@ def data_weather_latlon(latitude, longitude, startdate, enddate, question, conte
     # print(' - Running query URL: ', apiquery)
     # print()
 
-    try: 
+    try:
         csvbytes = urllib.request.urlopen(apiquery)
     except urllib.error.HTTPError as exc:
-        errorinfo= exc.read().decode() 
+        errorinfo= exc.read().decode()
         print('Error code: ', exc.code, errorinfo)
         sys.exit()
     except  urllib.error.URLError as exc:
@@ -135,7 +137,7 @@ def data_weather_latlon(latitude, longitude, startdate, enddate, question, conte
     rows = []
     for row in csvtext:
         rows.append(row)
-    
+
     startdate = startdate.replace(':', '')
     enddate = enddate.replace(':', '')
 
